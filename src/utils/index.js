@@ -4,6 +4,7 @@ function formatNumber (n) {
 }
 
 export function formatTime (date) {
+  date = new Date(date)
   const year = date.getFullYear()
   const month = date.getMonth() + 1
   const day = date.getDate()
@@ -18,7 +19,7 @@ export function formatTime (date) {
   return `${t1} ${t2}`
 }
 
-const formatSlideList = (slide) => {
+export function formatSlideList (slide) {
   const title = slide.title['#text']
   const image = slide.image['#text']
   const link = slide.link['#text']
@@ -29,7 +30,7 @@ const formatSlideList = (slide) => {
   }
 }
 
-const formatNewsList = (news) => {
+export function formatNewsList (news) {
   const { newsid, title, postdate, commentcount, lapinid, image } = news
   return {
     id: newsid,
@@ -42,7 +43,31 @@ const formatNewsList = (news) => {
   }
 }
 
-export {
-  formatSlideList,
-  formatNewsList
+export function formatTopicList (topic) {
+  const { id, c, cn, t, vc, rc, rt, un, uid } = topic
+  const headpath = `00${String(uid).padStart(7, '0').replace(/\B([0-9]{2})/g, '/$1')}_60.jpg`
+  return {
+    id,
+    title: t,
+    tag: c,
+    type: cn,
+    author: {
+      nickname: un,
+      headimg: `https://avatar.ithome.com/avatars/${headpath}`
+    },
+    viewcount: vc,
+    replycount: rc,
+    replytime: rt,
+    link: encodeURI(`/pages/quanzi/detail?id=${id}&title=${c} ${t}&author=${un}&vc=${vc}`)
+  }
+}
+
+export function formatComment (comment) {
+  return {
+    id: comment.M.Ci,
+    author: comment.M.N,
+    phone: comment.M.Ta,
+    floor: comment.M.SF || `${comment.F}楼`,
+    content: comment.M.C.replace(/<img/g, '<img width="100%"')
+  }
 }

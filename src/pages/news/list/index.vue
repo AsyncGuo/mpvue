@@ -15,8 +15,10 @@
       </swiper-item>
     </swiper>
     <div class="news-wrap">
-      {{news || '--'}}
       <news-item v-for="item of news" :news="item" :key="item.newsid"></news-item>
+    </div>
+    <div class="nomore">
+      已经到了底部
     </div>
   </div>
 </template>
@@ -78,6 +80,16 @@ export default {
           height: 100%;
         }
       }
+    }
+    .news-wrap {
+      padding: 0 10px;
+    }
+    .nomore{
+      width: 100%;
+      line-height: 50px;
+      text-align: center;
+      font-size: 14px;
+      color: #ddd;
     }
   }
 </style>

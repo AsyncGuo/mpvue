@@ -18,7 +18,6 @@ const store = new Vuex.Store({
       state.slides = [...data]
     },
     news (state, data) {
-      console.log(data)
       state.news = [...data]
     },
     topics (state, data) {
@@ -27,18 +26,6 @@ const store = new Vuex.Store({
   },
 
   actions: {
-    // getSlides ({ commit }) {
-    //   api.getSlides().then(res => {
-    //     const slides = res
-    //     if (!slides) return
-    //     const parsedSlides = xml2json(slides).rss.channel.item
-    //     const filtedSlides = parsedSlides.filter(
-    //       slide => slide.opentype['#text'] === '1'
-    //     )
-    //     const formatedSlides = filtedSlides.map(formatSlideList)
-    //     commit('slides', formatedSlides)
-    //   })
-    // },
     // 获取banner图
     async getSlides ({ commit }) {
       const slides = await api.getSlides()
@@ -54,17 +41,12 @@ const store = new Vuex.Store({
     async getNewsList ({ state, commit }, init) {
       const news = await api.getNewsList()
       if (!news) return
-      const newsItem = news.newslist
-      const formatedNews = newsItem.map(formatNewsList)
-      news.newslist.map((item, index) => {
-        console.log(1)
-      })
-      console.log(formatedNews, news)
-      // if (init) {
-      //   commit('news', formatedNews)
-      // } else {
-      //   commit('news', state.news.concat(formatedNews))
-      // }
+      const formatedNews = news.newslist.map(formatNewsList)
+      if (init) {
+        commit('news', formatedNews)
+      } else {
+        commit('news', state.news.concat(formatedNews))
+      }
     }
   }
 })
